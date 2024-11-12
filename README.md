@@ -5,19 +5,54 @@
 # Ghost Buster Game
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
-    <img src="images/preview.png" alt="calandar" height = "400">
+    <img src="images/preview.png" alt="preview" height = "400">
   </a>
 </div>
 
-## Try the Game
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#ghost-buster-game">Ghost Buster Game</a>
+    </li>
+    <li>
+      <a href="#try-the-game">Try the Game</a>
+    </li>
+    <li>
+      <a href="#game-structure">Game Structure</a>
+      <ul>
+        <li><a href="#task1-basic-ghost-game">Task1: Basic Ghost Game</a></li>
+        <ul>
+          <li><a href="#1-create-a-8x13-grid">1. Create a 8x13 Grid</a></li>
+          <li><a href="#2-build-buttons">2. Build Buttons</a></li>
+          <li><a href="#3-show-remaining-attempts-and-score">3. Show Remaining Attempts and Score</a></li>
+          <li><a href="#4-place-the-ghost">4. Place the Ghost</a></li>
+          <li><a href="#5-handle-cell-clicks">5. Handle Cell Clicks</a></li>
+          <li><a href="#6-update-posterior-probabilities">6. Update Posterior Probabilities</a></li>
+        </ul>
+        <li><a href="#task2-use-a-direction-sensor-with-the-distance-sensor">Task2: Use a direction sensor with the distance sensor</a></li>
+        <ul>
+          <li><a href="#a-conditional-distributions">a. Conditional Distributions</a></li>
+          <li><a href="#b-update-posterior-formula">b. Update Posterior Formula</a></li>
+          <li><a href="#c-gui-updates">c. GUI Updates</a></li>
+        </ul>
+      </ul>
+    </li>
+  </ol>
+</details>
 
-* Online demo: [HERE!](https://ghost-buster-game.vercel.app/)
-<br>Or 
+
+## Try the Game
+* Online demo: [WebSite](https://ghost-buster-game.vercel.app/)
+* Video demo: [Video](https://ghost-buster-game.vercel.app/)
 * Clone the project and open [index.html](https://github.com/NiemaAM/Ghost-Buster-Game/blob/main/index.html) file with your browser.
 
 ## Game Structure
+
 ### Task1: Basic Ghost game
-#### 1. Create a 8x13 grid.
+
+#### 1. Create a 8x13 Grid
 ```html
 <div class="grid" id="gameGrid"></div>
 ```
@@ -43,7 +78,9 @@ function initializeGame() {
     updateDisplay();
 }
 ```
-#### 2. Build a button to Bust the ghost and another one called View.
+
+#### 2. Build Buttons
+Build a button to Bust the ghost and another one called View.
 * Bust the ghost button.
 ```html
 <button class="button" id="bustButton" onclick="bust()" disabled>BUST</button>
@@ -107,7 +144,8 @@ function view() {
     updateDisplay();
 }
 ```
-#### 3. Show the remaining “Bust” & "score" attempts at any time.
+#### 3. Show Remaining Attempts and Score
+Show the remaining “bust” attempts & the remaining "score" and "ghosts" at any time.
 ```html
 <div>
   <p style="font-weight: bold;">Ghosts Remaining: <span style="font-weight: lighter;"  id="ghosts">1</span></p>
@@ -142,7 +180,8 @@ function updateDisplay() {
     });
 }
 ```
-#### 4. Have the ghost be placed in one of the cells according to a prior distribution of Ghost over location P0 (Ghost). 
+#### 4. Place the Ghost
+Have the ghost be placed in one of the cells according to a prior distribution of Ghost over location P0 (Ghost). 
 * Define a random variable `G`for ghost location with domain `[(1,1), (1,2), ....(7,13)]`
 ```javascript
 let ghostPosition;
@@ -171,13 +210,14 @@ function ComputeInitialPriorProbabilities(locations) { //TODO: what is locations
     probabilities = Array(gridHeight).fill().map(() => Array(gridWidth).fill(1 / totalCells));
 }
 ```
-#### 5. When clicking a cell, the user/player does a sensor reading and gets a color
-* Each click will make the player loose 1 point from an initial credit. 
-* When the credit runs out the player looses. 
-* The remaining credit should be updated and displayed after each click.
-* User can decide to "bust" a cell. 
-* If ghost is in the cell, the player wins otherwise he/she loses.
-* if the number of allowed busts (initialized to 2) runs out too.
+#### 5. Handle Cell Clicks
+When clicking a cell, the user/player does a sensor reading and gets a color.
+  * Each click will make the player loose 1 point from an initial credit. 
+  * When the credit runs out the player looses. 
+  * The remaining credit should be updated and displayed after each click.
+  * User can decide to "bust" a cell. 
+  * If ghost is in the cell, the player wins otherwise he/she loses.
+  * if the number of allowed busts (initialized to 2) runs out too.
 ```javascript
 let selectedCell = null;
 let endgame = false;
@@ -257,7 +297,8 @@ function sensorReading(x, y) {
 }
 ```
 
-#### 6. Update Posterior Ghost Location Probabilities
+#### 6. Update Posterior Probabilities
+Update Posterior Ghost Location Probabilities.
 After each click number `t` in `{1, 2, 3 …}` at location Li the Posterior Probability of the Ghost locations $Pt(G = Li)$ should be updated using Bayesian inference as follows:
 $Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)$
 * With $P0(G = Lj)$ is a uniform distribution (Initial prior probability)
@@ -289,3 +330,18 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
     }
 }
 ```
+
+### Task2: Use a direction sensor with the distance sensor
+* The player/agent has now another independent sensor that gives directions of the Ghost. 
+* This sensor can be used at any step in conjunction with the distance sensor at the same cell.
+
+#### a. Conditional Distributions
+Give the conditional distributions for the direction sensor.
+
+#### b. Update Posterior Formula
+Rewrite the formula for updating the posterior probabilities.
+The update can happen given evidence from either or both sensors at the same time.
+
+#### c. GUI Updates
+Update your GUI for use of the two sensors. 
+Implement changes a and b in your code and demonstrate proper working.
