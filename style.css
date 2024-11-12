@@ -1,0 +1,64 @@
+body {
+    font-family: "Lucida Console", "Courier New", monospace;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    user-select: none;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+.grid-menu {
+    display: grid;
+    grid-template-rows: 30% 50% 20%;
+}
+.grid {
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(13, 60px);
+    grid-template-rows: repeat(8, 60px);
+    gap: 1px;
+}
+.cell {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 60px;
+    height: 60px;
+    border: 6px outset;
+    border-color: #00aeff;
+    background: blue;
+    margin: 10px;
+    text-align: center; 
+    user-select: none;
+    font-family: "Lucida Console", "Courier New", monospace;
+    line-height: 60px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.cell:hover {
+    background-color: #f0f8ff;
+    border-color: red;
+}
+.selected {
+    border: 6px outset red;
+}
+.button {
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    font-family: "Lucida Console", "Courier New", monospace;
+    background-color: #00aeff;
+    border:  3px outset blue;
+    margin: 4px;
+}
+.button:hover {
+    background-color: #f0f8ff;
+    border-color: red;
+}
+.button:disabled {
+    background-color: #ebebeb;
+    border:  3px outset #d8d8d8;
+    cursor: not-allowed;
+}
