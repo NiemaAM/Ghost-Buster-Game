@@ -12,9 +12,9 @@
 
 > [!IMPORTANT]
 > 
-> Online Demo:  [![Vercel](https://img.shields.io/badge/TRY%20THE%20GAME%20ONLINE!-%23000000.svg?logo=vercel&style=for-the-badge&logoColor=white)](https://ghost-buster-game.vercel.app/)
+> [![Vercel](https://img.shields.io/badge/TRY%20THE%20GAME%20ONLINE!-%23000000.svg?logo=vercel&style=for-the-badge&logoColor=white)](https://ghost-buster-game.vercel.app/)
 >
-> Video Demo:  [![YouTube](https://img.shields.io/badge/YouTube%20Video%20Demo!-%23FF0000.svg?logo=YouTube&style=for-the-badge&logoColor=white)](#)
+> [![YouTube](https://img.shields.io/badge/YouTube%20Video%20Demo!-%23FF0000.svg?logo=YouTube&style=for-the-badge&logoColor=white)](#)
 
 ###### Table of contents
 <!--ts-->
