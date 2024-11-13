@@ -9,44 +9,29 @@
   </a>
 </div>
 
-# TABLE OF CONTENTS
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#ghost-buster-game">Ghost Buster Game</a>
-    </li>
-    <li>
-      <a href="#try-the-game">Try the Game</a>
-    </li>
-    <li>
-      <a href="#game-structure">Game Structure</a>
-      <ul>
-        <li><a href="#task1-basic-ghost-game">Task1: Basic Ghost Game</a></li>
-        <ul>
-          <li><a href="#1-create-a-8x13-grid">1. Create a 8x13 Grid</a></li>
-          <li><a href="#2-build-buttons">2. Build Buttons</a></li>
-          <li><a href="#3-show-remaining-attempts-and-score">3. Show Remaining Attempts and Score</a></li>
-          <li><a href="#4-place-the-ghost">4. Place the Ghost</a></li>
-          <li><a href="#5-handle-cell-clicks">5. Handle Cell Clicks</a></li>
-          <li><a href="#6-update-posterior-probabilities">6. Update Posterior Probabilities</a></li>
-        </ul>
-        <li><a href="#task2-use-a-direction-sensor-with-the-distance-sensor">Task2: Use a direction sensor with the distance sensor</a></li>
-        <ul>
-          <li><a href="#a-conditional-distributions">a. Conditional Distributions</a></li>
-          <li><a href="#b-update-posterior-formula">b. Update Posterior Formula</a></li>
-          <li><a href="#c-gui-updates">c. GUI Updates</a></li>
-        </ul>
-      </ul>
-    </li>
-  </ol>
-</details>
-
+###### Table of contents
+<!--ts-->
+   * [Try the Game](#try-the-game)
+   * [Game Structure](#game-structure)
+     * [Task1: Basic Ghost Game](#task1-basic-ghost-game)
+       * [1. Create a 8x13 Grid](#1-create-a-8x13-grid)
+       * [2. Build Buttons](#2-build-buttons)
+       * [3. Show Remaining Attempts and Score](#3-show-remaining-attempts-and-score)
+       * [4. Place the Ghost](#4-place-the-ghost)
+       * [5. Handle Cell Clicks](#5-handle-cell-clicks)
+       * [6. Update Posterior Probabilities](#6-update-posterior-probabilities)
+     * [Task2: Use a direction sensor with the distance sensor](#task2-use-a-direction-sensor-with-the-distance-sensor)
+       * [a. Conditional Distributions](#a-conditional-distributions)
+       * [b. Update Posterior Formula](#b-update-posterior-formula)
+       * [c. GUI Updates](#c-gui-updates)
+<!--te-->
 
 ## Try the Game
-* Online demo: [WebSite](https://ghost-buster-game.vercel.app/)
-* Video demo: [Video](https://ghost-buster-game.vercel.app/)
-* Clone the project and open [index.html](https://github.com/NiemaAM/Ghost-Buster-Game/blob/main/index.html) file with your browser.
+> [!IMPORTANT]
+> 
+> Online Demo:  [![Vercel](https://img.shields.io/badge/TRY%20THE%20GAME%20ONLINE!-%23000000.svg?logo=vercel&style=for-the-badge&logoColor=white)](https://ghost-buster-game.vercel.app/)
+>
+> Video Demo:  [![YouTube](https://img.shields.io/badge/YouTube%20Video%20Demo!-%23FF0000.svg?logo=YouTube&style=for-the-badge&logoColor=white)](#)
 
 ## Game Structure
 
