@@ -2,6 +2,7 @@ const gridWidth = 13;
 const gridHeight = 8;
 
 let selectedCell = null;
+const clickedCells = []; // Cells clicked by the player
 let ghostPosition;
 
 let ghosts = 1;
@@ -192,7 +193,7 @@ function sensorReading(x, y) {
     UpdatePosteriorGhostLocationProbabilities(color, x, y); 
     // Display the sensor reading with the color and the probability value
     if (!endgame)
-        document.getElementById('messages').innerHTML += `<span style="background-color: ${color.toLowerCase()}">sensor at (${x}, ${y}) [${color}] [${probabilities[y][x]}]</span><br>`;
+        document.getElementById('messages').innerHTML += `<span style="background-color: ${color.toLowerCase()}">sensor at (${x}, ${y}) [${color}]</span><br>`;
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
 }
 
@@ -206,11 +207,29 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
     With P0(G = Lj) is a uniform distribution (Initial prior probability)
     And P(S = Color at location Li | G = Li) = P(S = Color | distance = 0).*/
     let totalProbability = 0;
+    let found = false; // check if the cell has been clicked or no
+
+    // set the probabilty of the clicked cell to 1 if red and 0 if not red
+    const clickedColor = DistanceSense(xclk, yclk, 0, ghostPosition.xg, ghostPosition.yg);
+    probabilities[yclk][xclk] = (clickedColor === 'red') ? 1 : 0;
+    clickedCells.push({ xclk, yclk }); // add the new clicked cell to the list of clicked cells
+
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
-            const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg); //return a specific color for each cell
-            probabilities[y][x] *= (color === c) ? P[c] : (1 - P[c]);
-            totalProbability += probabilities[y][x];
+            // is the cell been clicked before?
+            // if yes then the cell probability will be 0 if it's not red and 1 if red
+            for (let i = 0; i < clickedCells.length; i++) {
+                if (y === clickedCells[i].y && x === clickedCells[i].x) {
+                    found = true; 
+                    break;
+                }
+            }
+            // update only the cells that have not been clicked before
+            if (!found){
+                const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg); //return a specific color for each cell
+                probabilities[y][x] *= (color === c) ? P[c] : (1 - P[c]);
+                totalProbability += probabilities[y][x];
+            }
         }
     }
     // Normalize the probabilities so that the sum of all probabilities is 1
