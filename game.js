@@ -261,7 +261,7 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
                 const color = DistanceSense(x, y, distance, xclk, yclk); // Return a specific color for each cell
                 
                 // Set probability to 0 for cells surrounding green or yellow cells
-                if ((c === 'green' && distance <= 4) || (c === 'yellow' && (distance <= 1 || distance >=4) )) {
+                if ((c === 'green' && distance <= 4) || (c === 'yellow' && distance <= 1 )) {
                     probabilities[y][x] = 0;
                 } else {
                     probabilities[y][x] *= (color === c) ? P[c] : (1 - P[c]);
