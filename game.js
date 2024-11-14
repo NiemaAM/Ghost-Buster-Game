@@ -210,34 +210,31 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
     let found = false; // check if the cell has been clicked or no
 
     // set the probabilty of the clicked cell to 1 if red and 0 if not red
-    const clickedColor = DistanceSense(xclk, yclk, 0, ghostPosition.xg, ghostPosition.yg);
-    probabilities[yclk][xclk] *= (clickedColor === 'red') ? P['red'] : 0;
     clickedCells.push({ xclk, yclk }); // add the new clicked cell to the list of clicked cells
+    const clickedColor = DistanceSense(xclk, yclk, 0, ghostPosition.xg, ghostPosition.yg);
 
-    for (let y = 0; y < gridHeight; y++) {
-        for (let x = 0; x < gridWidth; x++) {
-            // is the cell been clicked before?
-            // if yes then the cell probability will be 0 if it's not red and 1 if red
-            for (let i = 0; i < clickedCells.length; i++) {
-                if (y === clickedCells[i].y && x === clickedCells[i].x) {
-                    found = true; 
-                    break;
-                }
+    if (clickedColor === 'red'){ // the ghost is in the selected cell
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
+                probabilities[y][x] = (y === yclk && x === xclk) ? 1 : 0;
             }
-            // update only the cells that have not been clicked before
-            if (!found){
+        }
+    } else { // the ghost is not in the selected cell
+        probabilities[yclk][xclk] = 0;
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
                 const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg); //return a specific color for each cell
                 probabilities[y][x] *= (color === c) ? P[c] : (1 - P[c]);
                 totalProbability += probabilities[y][x];
             }
         }
-    }
-    // Normalize the probabilities so that the sum of all probabilities is 1
-    /* You will need to normalize all the probabilities of the other locations, 
-    after each update of the posteriori probability of the clicked position Li*/
-    for (let y = 0; y < gridHeight; y++) {
-        for (let x = 0; x < gridWidth; x++) {
-            probabilities[y][x] /= totalProbability; // Normalize each probability
+        // Normalize the probabilities so that the sum of all probabilities is 1
+        /* You will need to normalize all the probabilities of the other locations, 
+        after each update of the posteriori probability of the clicked position Li*/
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
+                probabilities[y][x] /= totalProbability; // Normalize each probability
+            }
         }
     }
 }
