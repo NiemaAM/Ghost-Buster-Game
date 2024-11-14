@@ -233,7 +233,50 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
             }
         }
     }
+}// Update probabilities using Bayesian inference
+/* UpdatePosteriorGhostLocationProbabilities(Color: c, xclk, yclk)
+updates the probabilities for each location based on the color c obtained/sensed at position xclk, yclk */
+function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
+    /* After each click number t in {1, 2, 3 …} at location Li the Posterior Probability of the Ghost locations 
+    Pt(G = Li) should be updated using Bayesian inference as follows:
+    Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)
+    With P0(G = Lj) as a uniform distribution (Initial prior probability)
+    And P(S = Color at location Li | G = Li) = P(S = Color | distance = 0).*/
+    let totalProbability = 0;
+    clickedCells.push({ xclk, yclk }); // Add the new clicked cell to the list of clicked cells
+
+    if (c === 'red') { // The ghost is in the selected cell
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
+                probabilities[y][x] = (y === yclk && x === xclk) ? 1 : 0;
+            }
+        }
+    } else { // The ghost is not in the selected cell
+        probabilities[yclk][xclk] = 0;
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
+                const distance = Math.abs(x - xclk) + Math.abs(y - yclk);
+                const color = DistanceSense(x, y, distance, ghostPosition.xg, ghostPosition.yg); // Return a specific color for each cell
+                
+                // Set probability to 0 for cells surrounding green or yellow cells
+                if ((c === 'green' && distance <= 4) || (c === 'yellow' && distance <= 1)) {
+                    probabilities[y][x] = 0;
+                } else {
+                    probabilities[y][x] *= (color === c) ? P[c] : (1 - P[c]);
+                    totalProbability += probabilities[y][x];
+                }
+            }
+        }
+
+        // Normalize the probabilities so that the sum of all probabilities is 1
+        for (let y = 0; y < gridHeight; y++) {
+            for (let x = 0; x < gridWidth; x++) {
+                probabilities[y][x] /= totalProbability; // Normalize each probability
+            }
+        }
+    }
 }
+
 
 // Initialize the game on load
 window.onload = initializeGame;
