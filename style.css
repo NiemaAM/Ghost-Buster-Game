@@ -291,3 +291,37 @@ h2 {
         font-size: 12px;
     }
 }
+
+@media (max-width: 500px) {
+    .grid {
+        grid-template-columns: repeat(13, 25px);
+        grid-template-rows: repeat(8, 25px);
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 15px;
+    }
+
+    #endGameMessage {
+        font-size: 15px;
+    }
+
+    .cell {
+        width: 25px;
+        height: 25px;
+        line-height: 25px; 
+        font-size: 8px;
+        text-align: center;
+        margin: 0;
+        padding: 0px;
+        border: 2px outset;
+        border-color: #00aeff;
+    }
+    
+    .button {
+        width: 120px;
+        height: 30px;
+        font-size: 12px;
+    }
+}
