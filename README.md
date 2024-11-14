@@ -247,11 +247,12 @@ const S = ['red', 'orange', 'yellow', 'green']; // Sensor reading domain
 ``` javascript
 const P = {'red': 0.6500, 'orange': 0.20, 'yellow': 0.10, 'green': 0.050}; 
 ```
-* `DistanceSense (xclk,yclk, dist, gx,gy)` returns a color
+* `DistanceSense (xclk,yclk, dist, gx,gy)` returns a color based on the calculated distance from the ghost:
   * *On the ghost:* `red`
   * *1 or 2 cells away:* `orange`
   * *3 or 4 cells away:* `yellow`
   * *5+ cells away:* `green`
+
 ``` javascript
 // Separate conditional distribution tables for colors per distance
 /* DistanceSense (xclk,yclk, dist, xg,yg) returns a color based on 
@@ -276,7 +277,7 @@ function sensorReading(x, y) {
     UpdatePosteriorGhostLocationProbabilities(color, x, y); 
     // Display the sensor reading with the color and the probability value
     if (!endgame)
-        document.getElementById('messages').innerHTML += `<span style="background-color: ${color.toLowerCase()}">sensor at (${x}, ${y}) [${color}] [${probabilities[y][x]}]</span><br>`;
+        document.getElementById('messages').innerHTML += `<span style="background-color: ${color.toLowerCase()}">sensor at (${x}, ${y}) [${color}]</span><br>`;
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
 }
 ```
@@ -289,6 +290,41 @@ $Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)$
 * And $P(S = Color at location Li | G = Li) = P(S = Color | distance = 0)$
 
 You will need to normalize all the probabilities of the other locations, after each update of the posteriori probability of the clicked position `Li`.
+  * when distance from ghost is 0:
+
+| P(C=Red\D=0) | P(C=Orange\D=0) | P(C=Yello\D=0) | P(C=Green\D=0) |
+|-----|--------|-------|-------|
+| 0.6500 | 0.20 | 0.10 | 0.050 |
+
+  * when distance from ghost is 1:
+
+| P(C=Red\D=1) | P(C=Orange\D=1) | P(C=Yello\D=1) | P(C=Green\D=1) |
+|-----|--------|-------|-------|
+| 0.5000 |	0.30	| 0.15	| 0.050 |
+
+  * when distance from ghost is 2:
+
+| P(C=Red\D=2) | P(C=Orange\D=2) | P(C=Yello\D=2) | P(C=Green\D=2) |
+|-----|--------|-------|-------|
+| 0.3000 | 0.40	| 0.20	| 0.100 |
+
+  * when distance from ghost is 3:
+
+| P(C=Red\D=3) | P(C=Orange\D=3) | P(C=Yello\D=3) | P(C=Green\D=3) |
+|-----|--------|-------|-------|
+| 0.1500	| 0.30	| 0.35	| 0.200 |
+
+  * when distance from ghost is 4:
+
+| P(C=Red\D=4) | P(C=Orange\D=4) | P(C=Yello\D=4) | P(C=Green\D=4) |
+|-----|--------|-------|-------|
+| 0.0500	| 0.20	| 0.40	| 0.350 |
+
+  * when distance from ghost is 5+:
+
+| P(C=Red\D=5+) | P(C=Orange\D=5+) | P(C=Yello\D=5+) | P(C=Green\D=5) |
+|-----|--------|-------|-------|
+| 0.0100	| 0.10 | 0.30	| 0.590 |
 
 `UpdatePosteriorGhostLocationProbabilities(Color: c, xclk,yclk)`
 ```javascript
