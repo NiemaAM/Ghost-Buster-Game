@@ -207,13 +207,9 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
     With P0(G = Lj) is a uniform distribution (Initial prior probability)
     And P(S = Color at location Li | G = Li) = P(S = Color | distance = 0).*/
     let totalProbability = 0;
-    let found = false; // check if the cell has been clicked or no
-
-    // set the probabilty of the clicked cell to 1 if red and 0 if not red
     clickedCells.push({ xclk, yclk }); // add the new clicked cell to the list of clicked cells
-    const clickedColor = DistanceSense(xclk, yclk, 0, ghostPosition.xg, ghostPosition.yg);
 
-    if (clickedColor === 'red'){ // the ghost is in the selected cell
+    if (c === 'red'){ // the ghost is in the selected cell
         for (let y = 0; y < gridHeight; y++) {
             for (let x = 0; x < gridWidth; x++) {
                 probabilities[y][x] = (y === yclk && x === xclk) ? 1 : 0;
