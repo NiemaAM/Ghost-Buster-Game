@@ -1,38 +1,66 @@
+/* General styling */
 body {
     font-family: "Lucida Console", "Courier New", monospace;
     background-color: rgb(44, 44, 44);
     color: white;
     user-select: none;
+    margin: 0;
+    padding: 0px;
+    box-sizing: border-box;
 }
+
+/* Centered title */
+h2 {
+    text-align: center;
+}
+
+/* Main container */
 .grid-container {
-    display: grid;
-    grid-template-columns: 70% 30%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 0px;
+    gap: 20px;
+    width: 100%;
 }
-.grid-menu {
-    display: grid;
-    grid-template-rows: 30% 50% 20%;
-}
+
+/* Game grid styling */
 .grid {
-    margin-left: auto;
-    margin-right: auto;
     display: grid;
     grid-template-columns: repeat(13, 60px);
     grid-template-rows: repeat(8, 60px);
-    gap: 1px;
+    gap: 3px;
+    transition: all 0.2s ease-in-out;
 }
+
+/* Score and messages box */
+.grid-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.buttons {
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Cell styling */
 .cell {
     box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     width: 60px;
     height: 60px;
     border: 6px outset;
     border-color: #00aeff;
     background: blue;
-    margin: 10px;
-    text-align: center; 
+    text-align: center;
     user-select: none;
     font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 14px;
     line-height: 60px;
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
@@ -44,13 +72,15 @@ body {
 .selected {
     border: 6px outset red;
 }
+
+/* Button styling */
 .button {
     width: 200px;
     height: 40px;
     text-align: center;
     font-family: "Lucida Console", "Courier New", monospace;
     background-color: #00aeff;
-    border:  3px outset blue;
+    border: 3px outset blue;
     margin: 4px;
 }
 .button:hover {
@@ -59,6 +89,101 @@ body {
 }
 .button:disabled {
     background-color: #ebebeb;
-    border:  3px outset #d8d8d8;
+    border: 3px outset #d8d8d8;
     cursor: not-allowed;
+}
+
+/* End game screen styling */
+#endGameScreen {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.5s ease;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .grid-container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+    
+    /* Make grid smaller and adjust layout */
+    .grid {
+        grid-template-columns: repeat(13, 40px);
+        grid-template-rows: repeat(8, 40px);
+        order: 1;
+    }
+    
+    .grid-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 80%;
+        order: 2;
+    }
+
+    .info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        order: 2;
+    }
+
+    /* Adjust button layout */
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        order: 3;
+    }
+
+    .messages-div {
+        order: 4;
+    }
+
+    /* Make cells smaller */
+    .cell {
+        width: 40px;
+        height: 40px;
+        font-size: 9px;
+        border: 4px outset;
+        border-color: #00aeff;
+    }
+
+    .button {
+        width: 150px;
+        height: 35px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 500px) {
+    .grid {
+        grid-template-columns: repeat(13, 30px);
+        grid-template-rows: repeat(8, 30px);
+    }
+    
+    .cell {
+        width: 30px;
+        height: 30px;
+        font-size: 8px;
+        border: 4px outset;
+        border-color: #00aeff;
+    }
+    
+    .button {
+        width: 120px;
+        height: 30px;
+        font-size: 12px;
+    }
 }
