@@ -43,6 +43,14 @@ h2 {
     max-width: 300px;
 }
 
+.info {
+    margin: 0px;
+}
+
+.messages-div {
+    margin: 0px;
+}
+
 .buttons {
     align-items: center;
     text-align: center;
@@ -58,9 +66,11 @@ h2 {
     border-color: #00aeff;
     background: blue;
     text-align: center;
+    margin: 0;
+    padding: 0px;
     user-select: none;
     font-family: "Lucida Console", "Courier New", monospace;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 60px;
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s;
@@ -111,16 +121,22 @@ h2 {
 }
 
 /* Responsive styling */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .grid-container {
         flex-direction: column; /* Stack elements vertically */
         align-items: center;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 20px;
     }
     
     /* Make grid smaller and adjust layout */
     .grid {
-        grid-template-columns: repeat(13, 40px);
-        grid-template-rows: repeat(8, 40px);
+        grid-template-columns: repeat(13, 50px);
+        grid-template-rows: repeat(8, 50px);
+        text-align: center;
         order: 1;
     }
     
@@ -149,13 +165,87 @@ h2 {
 
     .messages-div {
         order: 4;
+        width: 100%;
+        height: 50%;
+    }
+
+    /* Make cells smaller */
+    .cell {
+        width: 50px;
+        height: 50px;
+        font-size: 13px;
+        text-align: center;
+        margin: 0;
+        padding: 0px;
+        line-height: 50px; 
+        border: 6px outset;
+        border-color: #00aeff;
+    }
+
+    .button {
+        width: 150px;
+        height: 35px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 700px) {
+    .grid-container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+    
+    /* Make grid smaller and adjust layout */
+    .grid {
+        grid-template-columns: repeat(13, 40px);
+        grid-template-rows: repeat(8, 40px);
+        text-align: center;
+        order: 1;
+    }
+    
+    .grid-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 80%;
+        order: 2;
+    }
+
+    .info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        order: 2;
+    }
+
+    /* Adjust button layout */
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        order: 3;
+    }
+
+    .messages-div {
+        order: 4;
+        width: 100%;
+        height: 50%;
     }
 
     /* Make cells smaller */
     .cell {
         width: 40px;
         height: 40px;
-        font-size: 9px;
+        font-size: 10px;
+        text-align: center;
+        margin: 0;
+        padding: 0px;
+        line-height: 40px; 
         border: 4px outset;
         border-color: #00aeff;
     }
@@ -167,17 +257,30 @@ h2 {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
     .grid {
         grid-template-columns: repeat(13, 30px);
         grid-template-rows: repeat(8, 30px);
+        text-align: center;
     }
-    
+
+    h2 {
+        font-size: 15px;
+    }
+
+    #endGameMessage {
+        font-size: 15px;
+    }
+
     .cell {
         width: 30px;
         height: 30px;
+        line-height: 30px; 
         font-size: 8px;
-        border: 4px outset;
+        text-align: center;
+        margin: 0;
+        padding: 0px;
+        border: 2px outset;
         border-color: #00aeff;
     }
     
