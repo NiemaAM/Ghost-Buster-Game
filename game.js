@@ -233,7 +233,9 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
             }
         }
     }
-}// Update probabilities using Bayesian inference
+}
+
+// Update probabilities using Bayesian inference
 /* UpdatePosteriorGhostLocationProbabilities(Color: c, xclk, yclk)
 updates the probabilities for each location based on the color c obtained/sensed at position xclk, yclk */
 function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
