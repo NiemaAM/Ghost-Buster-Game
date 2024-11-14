@@ -211,7 +211,7 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
 
     // set the probabilty of the clicked cell to 1 if red and 0 if not red
     const clickedColor = DistanceSense(xclk, yclk, 0, ghostPosition.xg, ghostPosition.yg);
-    probabilities[yclk][xclk] = (clickedColor === 'red') ? 1 : 0;
+    probabilities[yclk][xclk] = (clickedColor === 'red') ? P[clickedColor] : 0;
     clickedCells.push({ xclk, yclk }); // add the new clicked cell to the list of clicked cells
 
     for (let y = 0; y < gridHeight; y++) {
