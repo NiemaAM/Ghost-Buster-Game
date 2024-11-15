@@ -50,18 +50,43 @@ function updateDisplay() {
     document.getElementById('ghosts').textContent = ghosts;
     document.getElementById('score').textContent = score;
     document.getElementById('busts').textContent = busts;
+    
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         const x = parseInt(cell.dataset.x);
         const y = parseInt(cell.dataset.y);
         cell.textContent = probabilities[y][x].toFixed(2);
+
+        // Hide or show probabilities based on the `isView` flag
         if (!isView) {
             cell.style.color = 'transparent';
         } else {
             cell.style.color = 'black';
         }
+/*
+        // Check if the current cell is the selected cell
+        if (selectedCell && selectedCell.x === x && selectedCell.y === y) {
+            // Determine the direction with the highest probability
+            const bestDirection = Object.entries(DirectionProbabilities)
+                .reduce((a, b) => (a[1] > b[1] ? a : b))[0];
+
+            // Map directions to ASCII arrows
+            const directionToArrow = {
+                'top': '↑',
+                'down': '↓',
+                'right': '→',
+                'left': '←',
+                'on ghost': '👻'
+            };
+            const arrow = directionToArrow[bestDirection] || '';
+
+            // Display the arrow in the cell
+            cell.innerHTML = `${arrow}<br>${probabilities[y][x].toFixed(2)}`;
+        }
+*/
     });
 }
+
 
 // Handle cell selection
 function selectCell(x, y) {
@@ -183,7 +208,7 @@ function DistanceSense(xclk, yclk, dist, xg, yg) {
     return S[3];
 }
 
-// Sensor reading: display color based on distance
+// Sensor reading: display color based on distance, and direction based on ghost position
 function sensorReading(x, y) {
     const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg);
     const direction = DirectionSense(x, y, ghostPosition.xg, ghostPosition.yg);
@@ -256,7 +281,7 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
 This sensor can be used at any step in conjunction with the distance sensor at the same cell
 a- Give the conditional distributions for the direction sensor.*/
 const D = ['top', 'down', 'right', 'left', 'on ghost'];
-const PD = {'top': 0.8, 'down': 0.8, 'right': 0.8, 'left': 0.8, 'on ghost': 0.95}; // Conditional probability distributions P(Color | Distance from Ghost)
+const PD = {'top': 0.8, 'down': 0.8, 'right': 0.8, 'left': 0.8, 'on ghost': 0.95}; // Conditional probability distributions P(Direction | Distance from Ghost)
 let DirectionProbabilities = {'top': 0.2, 'down': 0.2, 'right': 0.2, 'left': 0.2, 'on ghost': 0.2};
 
 function DirectionSense(xclk, yclk, xg, yg) {
