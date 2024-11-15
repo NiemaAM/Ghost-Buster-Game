@@ -185,53 +185,30 @@ function DistanceSense(xclk, yclk, dist, xg, yg) {
 
 // Sensor reading: display color based on distance
 function sensorReading(x, y) {
-    const color =  DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg);
+    const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg);
+    const direction = DirectionSense(x, y, ghostPosition.xg, ghostPosition.yg);
+    
     // Display the color on the clicked cell
     const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
     cell.style.backgroundColor = color;
     cell.style.borderColor = color;
-    UpdatePosteriorGhostLocationProbabilities(color, x, y); 
-    // Display the sensor reading with the color and the probability value
-    if (!endgame)
-        document.getElementById('messages').innerHTML += `<span style="background-color: ${color.toLowerCase()}">sensor at (${x}, ${y}) [${color}]</span><br>`;
+
+    // Update probabilities
+    UpdatePosteriorGhostLocationProbabilities(color, x, y);
+    UpdatePosteriorGhostDirectionProbabilities(direction, x, y);
+
+    // Convert DirectionProbabilities to a string
+    const directionProbabilitiesString = Object.entries(DirectionProbabilities)
+        .map(([dir, prob]) => `[${dir}: ${prob.toFixed(2)}]`)
+        .join(' ');
+
+    // Display the sensor reading with the color, direction, and probability values
+    if (!endgame) {
+        document.getElementById('messages').innerHTML += 
+            `<span style="background-color: ${color.toLowerCase()}">
+                sensor at (${x}, ${y}) [${color}] ${directionProbabilitiesString}
+            </span><br>`;
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-}
-
-// Update probabilities using Bayesian inference
-/* UpdatePosteriorGhostLocationProbabilities(Color: c, xclk,yclk). 
-updates the probabilities for each location based on the color c obtained/sensed at position xclk, yclk*/
-function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
-    /* After each click number t in {1, 2, 3 …} at location Li the Posterior Probability of the Ghost locations 
-    Pt(G = Li) should be updated using Bayesian inference as follows:
-    Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)
-    With P0(G = Lj) is a uniform distribution (Initial prior probability)
-    And P(S = Color at location Li | G = Li) = P(S = Color | distance = 0).*/
-    let totalProbability = 0;
-    clickedCells.push({ xclk, yclk }); // add the new clicked cell to the list of clicked cells
-
-    if (c === 'red'){ // the ghost is in the selected cell
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
-                probabilities[y][x] = (y === yclk && x === xclk) ? 1 : 0;
-            }
-        }
-    } else { // the ghost is not in the selected cell
-        probabilities[yclk][xclk] = 0;
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
-                const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg); //return a specific color for each cell
-                probabilities[y][x] *= (color === c) ? P[c] : (1 - P[c]);
-                totalProbability += probabilities[y][x];
-            }
-        }
-        // Normalize the probabilities so that the sum of all probabilities is 1
-        /* You will need to normalize all the probabilities of the other locations, 
-        after each update of the posteriori probability of the clicked position Li*/
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
-                probabilities[y][x] /= totalProbability; // Normalize each probability
-            }
-        }
     }
 }
 
@@ -244,9 +221,7 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
     Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)
     With P0(G = Lj) as a uniform distribution (Initial prior probability)
     And P(S = Color at location Li | G = Li) = P(S = Color | distance = 0).*/
-    let totalProbability = 0;
     clickedCells.push({ xclk, yclk }); // Add the new clicked cell to the list of clicked cells
-
     if (c === 'red') { // The ghost is in the selected cell
         for (let y = 0; y < gridHeight; y++) {
             for (let x = 0; x < gridWidth; x++) {
@@ -254,6 +229,7 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
             }
         }
     } else { // The ghost is not in the selected cell
+        let totalProbability = 0;
         probabilities[yclk][xclk] = 0;
         for (let y = 0; y < gridHeight; y++) {
             for (let x = 0; x < gridWidth; x++) {
@@ -267,7 +243,6 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
                 }
             }
         }
-
         // Normalize the probabilities so that the sum of all probabilities is 1
         for (let y = 0; y < gridHeight; y++) {
             for (let x = 0; x < gridWidth; x++) {
@@ -277,6 +252,49 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
     }
 }
 
+/* The player/agent has now another independent sensor that gives directions of the Ghost. 
+This sensor can be used at any step in conjunction with the distance sensor at the same cell
+a- Give the conditional distributions for the direction sensor.*/
+const D = ['top', 'down', 'right', 'left', 'on ghost'];
+const PD = {'top': 0.8, 'down': 0.8, 'right': 0.8, 'left': 0.8, 'on ghost': 0.95}; // Conditional probability distributions P(Color | Distance from Ghost)
+let DirectionProbabilities = {'top': 0.2, 'down': 0.2, 'right': 0.2, 'left': 0.2, 'on ghost': 0.2};
+
+function DirectionSense(xclk, yclk, xg, yg) {
+    if (yg < yclk) return D[0]; // top
+    if (yg > yclk) return D[1]; // down
+    if (xg > xclk) return D[2]; // right
+    if (xg < xclk) return D[3]; // left
+    return D[4]; // on the ghost
+}
+
+/* b- rewrite the formula for updating the posterior probabilities. 
+The update can happen given evidence from either or both sensors at the same time. */
+function UpdatePosteriorGhostDirectionProbabilities(direction, xclk, yclk) {
+    if (direction === 'on ghost'){  // The ghost is in the selected cell
+        for (let dir in DirectionProbabilities) {
+            DirectionProbabilities[dir] = (dir === 'on ghost') ? 1 : 0;
+        }
+    } else { // The ghost is not in the selected cell
+        let totalProbability = 0;
+        // Update each direction's probability using the conditional probability from PD
+        for (let dir in DirectionProbabilities) {
+            if (DirectionProbabilities.hasOwnProperty(dir)) {
+                if (dir === direction) {
+                    DirectionProbabilities[dir] *= PD[direction]; // Apply conditional probability
+                } else {
+                    DirectionProbabilities[dir] *= (1 - PD[direction]); // Adjust for other directions
+                }
+                totalProbability += DirectionProbabilities[dir];
+            }
+        }
+        // Normalize the probabilities so that they sum to 1
+        for (let dir in DirectionProbabilities) {
+            if (DirectionProbabilities.hasOwnProperty(dir)) {
+                DirectionProbabilities[dir] /= totalProbability;
+            }
+        }
+    }
+}
 
 // Initialize the game on load
 window.onload = initializeGame;
