@@ -267,7 +267,6 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
                 }
             }
         }
-    }
 
         // Normalize the probabilities so that the sum of all probabilities is 1
         for (let y = 0; y < gridHeight; y++) {
