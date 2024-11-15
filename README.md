@@ -383,7 +383,7 @@ Give the conditional distributions for the direction sensor.
 This sensor can be used at any step in conjunction with the distance sensor at the same cell
 a- Give the conditional distributions for the direction sensor.*/
 const D = ['top', 'down', 'right', 'left', 'on ghost'];
-const PD = {'top': 0.8, 'down': 0.8, 'right': 0.8, 'left': 0.8, 'on ghost': 0.95}; // Conditional probability distributions P(Color | Distance from Ghost)
+const PD = {'top': 0.8, 'down': 0.8, 'right': 0.8, 'left': 0.8, 'on ghost': 0.95}; // Conditional probability distributions P(Direction | Distance from Ghost)
 let DirectionProbabilities = {'top': 0.2, 'down': 0.2, 'right': 0.2, 'left': 0.2, 'on ghost': 0.2};
 
 function DirectionSense(xclk, yclk, xg, yg) {
