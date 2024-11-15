@@ -378,11 +378,87 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
 
 #### a. Conditional Distributions
 Give the conditional distributions for the direction sensor.
+```javascript
+/* The player/agent has now another independent sensor that gives directions of the Ghost. 
+This sensor can be used at any step in conjunction with the distance sensor at the same cell
+a- Give the conditional distributions for the direction sensor.*/
+const D = ['top', 'down', 'right', 'left', 'on ghost'];
+const PD = {'top': 0.8, 'down': 0.8, 'right': 0.8, 'left': 0.8, 'on ghost': 0.95}; // Conditional probability distributions P(Color | Distance from Ghost)
+let DirectionProbabilities = {'top': 0.2, 'down': 0.2, 'right': 0.2, 'left': 0.2, 'on ghost': 0.2};
+
+function DirectionSense(xclk, yclk, xg, yg) {
+    if (yg < yclk) return D[0]; // top
+    if (yg > yclk) return D[1]; // down
+    if (xg > xclk) return D[2]; // right
+    if (xg < xclk) return D[3]; // left
+    return D[4]; // on the ghost
+}
+```
 
 #### b. Update Posterior Formula
 Rewrite the formula for updating the posterior probabilities.
 The update can happen given evidence from either or both sensors at the same time.
+```javascript
+/* b- rewrite the formula for updating the posterior probabilities. 
+The update can happen given evidence from either or both sensors at the same time. */
+function UpdatePosteriorGhostDirectionProbabilities(direction, xclk, yclk) {
+    if (direction === 'on ghost'){  // The ghost is in the selected cell
+        for (let dir in DirectionProbabilities) {
+            DirectionProbabilities[dir] = (dir === 'on ghost') ? 1 : 0;
+        }
+    } else { // The ghost is not in the selected cell
+        let totalProbability = 0;
+        // Update each direction's probability using the conditional probability from PD
+        for (let dir in DirectionProbabilities) {
+            if (DirectionProbabilities.hasOwnProperty(dir)) {
+                if (dir === direction) {
+                    DirectionProbabilities[dir] *= PD[direction]; // Apply conditional probability
+                } else {
+                    DirectionProbabilities[dir] *= (1 - PD[direction]); // Adjust for other directions
+                }
+                totalProbability += DirectionProbabilities[dir];
+            }
+        }
+        // Normalize the probabilities so that they sum to 1
+        for (let dir in DirectionProbabilities) {
+            if (DirectionProbabilities.hasOwnProperty(dir)) {
+                DirectionProbabilities[dir] /= totalProbability;
+            }
+        }
+    }
+}
+```
 
 #### c. GUI Updates
 Update your GUI for use of the two sensors. 
 Implement changes a and b in your code and demonstrate proper working.
+```javascript
+// Sensor reading: display color based on distance, and direction based on ghost position
+function sensorReading(x, y) {
+    const color = DistanceSense(x, y, 0, ghostPosition.xg, ghostPosition.yg);
+    const direction = DirectionSense(x, y, ghostPosition.xg, ghostPosition.yg);
+    
+    // Display the color on the clicked cell
+    const cell = document.querySelector(`.cell[data-x='${x}'][data-y='${y}']`);
+    cell.style.backgroundColor = color;
+    cell.style.borderColor = color;
+
+    // Update probabilities
+    UpdatePosteriorGhostLocationProbabilities(color, x, y);
+    UpdatePosteriorGhostDirectionProbabilities(direction, x, y);
+
+    // Convert DirectionProbabilities to a string
+    const directionProbabilitiesString = Object.entries(DirectionProbabilities)
+        .map(([dir, prob]) => `[${dir}: ${prob.toFixed(2)}]`)
+        .join(' ');
+
+    // Display the sensor reading with the color, direction, and probability values
+    if (!endgame) {
+        document.getElementById('messages').innerHTML += 
+            `<span style="background-color: ${color.toLowerCase()}">
+                sensor at (${x}, ${y}) [${color}] ${directionProbabilitiesString}
+            </span><br>`;
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    }
+}
+```
