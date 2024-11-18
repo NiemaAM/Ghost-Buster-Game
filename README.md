@@ -16,6 +16,13 @@
 >
 > [![YouTube](https://img.shields.io/badge/YouTube%20Video%20Demo!-%23FF0000.svg?logo=YouTube&style=for-the-badge&logoColor=white)](#)
 
+## Team:
+All team menbers worked together on the project:
+* Niema Alaoui Mdaghri < 157755 > (section 2)
+* Yassine Maatougui < 69987 > (section 2)
+* Mohammed Younsi < 103118 > (section 1)
+* Ouiam Byah < 85458 > (section 1)
+
 ###### Table of contents
 <!--ts-->
    * [Game Structure](#game-structure)
