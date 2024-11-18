@@ -378,6 +378,38 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
 
 #### a. Conditional Distributions
 Give the conditional distributions for the direction sensor.
+
+This table represents the conditional probability distribution for a direction sensor, which detects the direction of the ghost relative to the agent. 
+
+The probabilities are conditioned on the relative position of the ghost to the agent. 
+
+The possible directions are:
+
+- `top`: Ghost is above the agent.
+- `down`: Ghost is below the agent.
+- `right`: Ghost is to the right of the agent.
+- `left`: Ghost is to the left of the agent.
+- `on ghost`: The agent and the ghost are in the same position.
+
+| **Relative Position of Ghost** | **P(Direction = 'top')** | **P(Direction = 'down')** | **P(Direction = 'right')** | **P(Direction = 'left')** | **P(Direction = 'on ghost')** |
+|--------------------------------|--------------------------|---------------------------|----------------------------|---------------------------|--------------------------------|
+| **Ghost at the selected cell**| 0.0  | 0.0  | 0.0  | 0.0  | **0.95** |
+| **Ghost above**| **0.8**  | 0.0  | 0.0  | 0.0  | 0.0  |
+| **Ghost below**| 0.0  | **0.8**  | 0.0  | 0.0  | 0.0  |
+| **Ghost to the right**| 0.0  | 0.0  | **0.8**  | 0.0  | 0.0  |
+| **Ghost to the left**| 0.0  | 0.0  | 0.0  | **0.8**  | 0.0  |
+
+- **P(Direction = 'top')**: The probability of detecting `top`, which occurs when the ghost is **above** the agent (`yg < yclk`).
+- **P(Direction = 'down')**: The probability of detecting `down`, which occurs when the ghost is **below** the agent (`yg > yclk`).
+- **P(Direction = 'right')**: The probability of detecting `right`, which occurs when the ghost is **to the right** of the agent (`xg > xclk`).
+- **P(Direction = 'left')**: The probability of detecting `left`, which occurs when the ghost is **to the left** of the agent (`xg < xclk`).
+- **P(Direction = 'on ghost')**: The probability of detecting `on ghost`, which occurs when the agent and the ghost are on the **same position** (`xclk == xg && yclk == yg`).
+
+> [!NOTE] 
+> - The probability values are based on sensor readings and the relative position of the ghost. 
+> - For example, if the agent is at the same position as the ghost, the sensor is highly likely to detect `"on ghost"` with a probability of 0.95.
+> - If the ghost is in a relative position (top, down, left, or right), the sensor has a high likelihood (0.8) of detecting that direction.
+
 ```javascript
 /* The player/agent has now another independent sensor that gives directions of the Ghost. 
 This sensor can be used at any step in conjunction with the distance sensor at the same cell
