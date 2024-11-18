@@ -360,7 +360,7 @@ const P = {'red': 0.6500, 'orange': 0.20, 'yellow': 0.10, 'green': 0.050};
 | **Green** | >= 5 | 0.050 |
 
 | Selected Cell Color | P (Ghost/Selected Cell Color) | Reasoning |
-|-----|-----|-----|-----|
+|---------------------|-------------------------------|-----------|
 | **No Selected Cell** | 0.0096 | Uniform distribution across all cells if no specific cell is selected. |
 | **Red** | 0.0 | If Red is selected, the ghost must be in the clicked cell. |
 | **Orange** | 0.08 | If Orange is selected, nearby cells (1-2 away) are more likely. |
