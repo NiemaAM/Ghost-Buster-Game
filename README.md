@@ -352,14 +352,14 @@ const S = ['red', 'orange', 'yellow', 'green']; // Sensor reading domain
 const P = {'red': 0.6500, 'orange': 0.20, 'yellow': 0.10, 'green': 0.050}; 
 ``` 
 
-| Color | Distance | P |
+| Color | Distance | P(Ghost/Color) |
 |-----|-----|-----|
 | **Red** | 0 | 0.6500 | 
 | **Orenge** | <= 2 | 0.20 |
 | **Yellow** | >=3 <= 4 | 0.10 |
 | **Green** | >= 5 | 0.050 |
 
-| Selected Cell Color | Probability for Other Cells | Reasoning |
+| Selected Cell Color | P (Ghost/Selected Cell Color) | Reasoning |
 |-----|-----|-----|-----|
 | **No Selected Cell** | 0.0096 | Uniform distribution across all cells if no specific cell is selected. |
 | **Red** | 0.0 | If Red is selected, the ghost must be in the clicked cell. |
@@ -495,40 +495,40 @@ Give the conditional distributions for the direction sensor.
     * This table presents the combined probabilities for the game's sensor system, which uses both direction and color sensors. 
     * The joint probabilities are calculated by multiplying the probability of a given direction by the probability of a given color (based on distance from the ghost).
 
-| **Direction** | **Symbol** | **Color**  | **Distance**         | **Joint Probability \( P(\text{Direction}, \text{Color}) \)** |
-|---------------|------------|------------|----------------------|--------------------------------------------------|
-| N             | ↑          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| N             | ↑          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| N             | ↑          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| N             | ↑          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| NE            | ↗          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| NE            | ↗          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| NE            | ↗          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| NE            | ↗          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| E             | →          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| E             | →          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| E             | →          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| E             | →          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| SE            | ↘          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| SE            | ↘          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| SE            | ↘          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| SE            | ↘          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| S             | ↓          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| S             | ↓          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| S             | ↓          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| S             | ↓          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| SW            | ↙          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| SW            | ↙          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| SW            | ↙          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| SW            | ↙          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| W             | ←          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| W             | ←          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| W             | ←          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| W             | ←          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
-| NW            | ↖          | Red        | 0                    | \( 0.125 \times 0.6500 = 0.08125 \)              |
-| NW            | ↖          | Orange     | \( \leq 2 \)         | \( 0.125 \times 0.20 = 0.025 \)                  |
-| NW            | ↖          | Yellow     | \( 3 \leq d \leq 4 \)| \( 0.125 \times 0.10 = 0.0125 \)                 |
-| NW            | ↖          | Green      | \( \geq 5 \)         | \( 0.125 \times 0.050 = 0.00625 \)               |
+| **Direction** | **Symbol** | **Color**  | **Distance** | **Joint Probability P(Direction, Color)** |
+|---------------|------------|------------|--------------|-------------------------------------------|
+| N             | ↑          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| N             | ↑          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| N             | ↑          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| N             | ↑          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| NE            | ↗          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| NE            | ↗          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| NE            | ↗          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| NE            | ↗          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| E             | →          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| E             | →          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| E             | →          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| E             | →          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| SE            | ↘          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| SE            | ↘          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| SE            | ↘          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| SE            | ↘          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| S             | ↓          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| S             | ↓          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| S             | ↓          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| S             | ↓          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| SW            | ↙          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| SW            | ↙          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| SW            | ↙          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| SW            | ↙          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| W             | ←          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| W             | ←          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| W             | ←          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| W             | ←          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
+| NW            | ↖          | Red        | 0            | 0.125 × 0.6500 = 0.08125               |
+| NW            | ↖          | Orange     | ≤ 2          | 0.125 × 0.20 = 0.025                   |
+| NW            | ↖          | Yellow     | 3 ≤ d ≤ 4    | 0.125 × 0.10 = 0.0125                  |
+| NW            | ↖          | Green      | ≥ 5          | 0.125 × 0.050 = 0.00625                |
 
 > [!NOTE]
 >**Direction Probabilities**: Each of the 8 directions (N, NE, E, SE, S, SW, W, NW) has an equal probability of 0.125.
