@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 </head>
 <body>
-    <center><h2>BUST THE GHOST!</h2></center>
+    <center><h2>BUST THE GHOST 👻</h2></center>
     <div class="grid-container">
         <div class="grid" id="gameGrid"></div>
         <div class="grid-menu">
@@ -22,9 +22,14 @@
                 </div> 
             </div>           
             <div class="buttons">
+                <div class="row1">
                     <button class="button" id="bustButton" onclick="bust()" disabled>BUST</button>
-                    <!-- <button class="button" id="timeButton" onclick="time()" disabled>TIME+1</button> -->
-                    <button class="button" id="viewButton" onclick="view()">View</button>
+                    <button class="button" id="percentageToggle" onclick="togglePercentage()">Percentage %</button>
+                </div>
+                <div class="row2">
+                    <button class="button" id="viewButton" onclick="toggleView()">View</button>
+                    <button class="button" id="directionButton" onclick="toggleDirection()">Directions</button>
+                </div>
             </div>
         </div>
     </div>
