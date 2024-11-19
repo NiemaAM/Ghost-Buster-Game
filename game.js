@@ -73,7 +73,7 @@ function bust() {
             score -= 1; // Deduct score for wrong guess
             document.getElementById('messages').innerHTML += `<span style="color: red">Wrong guess!</span><br>`;
             // Game over case (no more busts)
-            if (busts <= 0 || score < 10) {
+            if (busts <= 0 || score < 1) {
                 document.getElementById('messages').innerHTML += "Game Over!<br>";
                 document.getElementById('endGameScreen').style.display = 'flex'; 
                 document.getElementById('endGameMessage').innerHTML = "Game Over!";
@@ -132,7 +132,7 @@ function toggleView() {
 // Update the display
 let ghosts = 1;
 let busts = 2;
-let score = 10;
+let score = 15;
 let endgame = false;
 let hasClicked = false; //Displaying the exact probability number in the first state
 function updateDisplay() {
