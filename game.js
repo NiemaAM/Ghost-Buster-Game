@@ -262,7 +262,7 @@ let colorsProbabilities = Array(gridHeight).fill().map(() => Array(gridWidth).fi
 let selectedCell = null; // currently selected cell
 function selectCell(x, y) {
     if (!endgame)
-        if (score > 0){
+        if (score > 1){
             score -= 1; 
             selectedCell = { x, y };
             const cells = document.querySelectorAll('.cell');
@@ -272,7 +272,8 @@ function selectCell(x, y) {
             // Enable the Bust & Time button when a cell is selected
             document.getElementById('bustButton').disabled = false;
             sensorReading(x, y);
-        } else {
+        } else if (score === 1) {
+            score = 0;
             document.getElementById('messages').innerHTML += "Game Over!<br>";
             endgame = true;// End the game
             document.getElementById('endGameScreen').style.display = 'flex'; 
