@@ -54,7 +54,7 @@ function bust() {
     // Add the selected cell to the bustedCells array
     bustedCells.push({ x, y });
     busts -= 1;  // Deduct a bust
-    if (score >= 10){
+    if (score > 0){
         if (selectedCell && ghostPosition.xg === selectedCell.x && ghostPosition.yg === selectedCell.y) {
             ghosts -= 1; // Reduce remaining score
             document.getElementById('messages').innerHTML += "You busted the ghost 👻 !<br>";
@@ -70,7 +70,7 @@ function bust() {
                 startVelocity: 30,
             });
         } else {
-            score -= 10; // Deduct score for wrong guess
+            score -= 1; // Deduct score for wrong guess
             document.getElementById('messages').innerHTML += `<span style="color: red">Wrong guess!</span><br>`;
             // Game over case (no more busts)
             if (busts <= 0 || score < 10) {
@@ -88,7 +88,8 @@ function bust() {
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
         updateDisplay();
     }
-    else if (score < 10){
+    else if (score <= 0){
+        score = 0;
         document.getElementById('messages').innerHTML += "Game Over!<br>";
         document.getElementById('endGameScreen').style.display = 'flex'; 
         document.getElementById('endGameMessage').innerHTML = "Game Over!";
@@ -131,7 +132,7 @@ function toggleView() {
 // Update the display
 let ghosts = 1;
 let busts = 2;
-let score = 50;
+let score = 10;
 let endgame = false;
 let hasClicked = false; //Displaying the exact probability number in the first state
 function updateDisplay() {
