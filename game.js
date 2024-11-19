@@ -54,7 +54,7 @@ function bust() {
     // Add the selected cell to the bustedCells array
     bustedCells.push({ x, y });
     busts -= 1;  // Deduct a bust
-    if (score > 0){
+    if (score >= 10){
         if (selectedCell && ghostPosition.xg === selectedCell.x && ghostPosition.yg === selectedCell.y) {
             ghosts -= 1; // Reduce remaining score
             document.getElementById('messages').innerHTML += "You busted the ghost 👻 !<br>";
