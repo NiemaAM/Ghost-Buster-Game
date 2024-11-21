@@ -848,3 +848,4 @@ function togglePercentage() {
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
     }
 }
+...
