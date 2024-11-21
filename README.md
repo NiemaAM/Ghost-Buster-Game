@@ -22,10 +22,10 @@
 
 ## Team:
 All team menbers worked together on the project:
-* Niema Alaoui Mdaghri < 157755 > (section 2)
-* Yassine Maatougui < 69987 > (section 2)
-* Mohammed Younsi < 103118 > (section 1)
-* Ouiam Byah < 85458 > (section 1)
+* Task1: Niema Alaoui Mdaghri < 157755 > (section 2)
+* Task2: Yassine Maatougui < 69987 > (section 2)
+* Task2: Mohammed Younsi < 103118 > (section 1)
+* Task1: Ouiam Byah < 85458 > (section 1)
 
 ###### Table of contents
 <!--ts-->
