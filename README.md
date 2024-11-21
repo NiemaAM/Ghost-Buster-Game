@@ -982,9 +982,9 @@ function toggleDirection() {
     }
 }
 ```
-#### e. Handling Data Storage
+### e. Handling Data Storage
 
-### 1- Creating an array to store the clicked cells
+#### 1- Creating an array to store the clicked cells
 
 ```javascript
 let isDirection = false; // Direction button
@@ -1026,7 +1026,7 @@ function getCellsInDirectionExtended(startCell, direction) {
     return cells;
 }
 ```
-### 2- Keeping track of busted cells
+#### 2- Keeping track of busted cells
 
 ```javascript
 // Handle bust button
