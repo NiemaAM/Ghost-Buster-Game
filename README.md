@@ -41,6 +41,7 @@ All team menbers worked together on the project:
        * [a. Conditional Distributions](#a-conditional-distributions)
        * [b. Update Posterior Formula](#b-update-posterior-formula)
        * [c. GUI Updates](#c-gui-updates)
+       * [d. Handling Data Storage](#d-handling-data-storage)
 <!--te-->
 
 ## Game Structure
