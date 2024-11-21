@@ -265,11 +265,9 @@ let colorsProbabilities = Array(gridHeight).fill().map(() => Array(gridWidth).fi
 // Handle cell selection
 let selectedCell = null; // currently selected cell
 function selectCell(x, y) {
-    // Check if the cell has already been clicked
-    const alreadyClicked = selectedCells.some(cell => cell.x === x && cell.y === y);
     if (!endgame)
         if (score > 1){
-            if(!alreadyClicked) score -= 1; 
+            score -= 1; 
             selectedCell = { x, y };
             const cells = document.querySelectorAll('.cell');
             cells.forEach(c => c.classList.remove('selected')); // Remove previous selection
