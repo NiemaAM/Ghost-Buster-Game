@@ -738,7 +738,7 @@ function toggleDirection() {
     }
 }
 ```
-## Handling already busted cell
+## Handling already busted cells
 
 ### Updating GUI when using two sensors (Direction & Color)
 
@@ -804,7 +804,7 @@ function logMessages(x, y) {
             }
         }
 ```
-#### 2- Showing probabilities and directions
+#### 2- Show probabilities & directions
 
 ```javascript
  
@@ -982,9 +982,9 @@ function toggleDirection() {
     }
 }
 ```
-### e. Handling Data Storage
+#### e. Handling Data Storage
 
-#### 1- Creating an array to store the clicked cells
+### 1- Creating an array to store the clicked cells
 
 ```javascript
 let isDirection = false; // Direction button
@@ -1026,7 +1026,7 @@ function getCellsInDirectionExtended(startCell, direction) {
     return cells;
 }
 ```
-#### 2- Keeping track of busted cells
+### 2- Keeping track of busted cells
 
 ```javascript
 // Handle bust button
