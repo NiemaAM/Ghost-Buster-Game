@@ -686,6 +686,8 @@ function updateProbabilitiesWithDirection() {
 
 #### Build percentage & direction buttons:
 
+##### 1- Percentage button
+
 ``` html
  <button class="button" id="percentageToggle" onclick="togglePercentage()">Percentage %</button>
 ```
@@ -710,6 +712,7 @@ function togglePercentage() {
     }
 }
 ```
+##### 2- direction button
 ``` html
 <button class="button" id="directionButton" onclick="toggleDirection()">Directions</button>
 ```
@@ -735,11 +738,11 @@ function toggleDirection() {
     }
 }
 ```
-Handling already busted cell
+## Handling already busted cell
 
-Updating GUI when using two sensors (Direction & Color)
+### Updating GUI when using two sensors (Direction & Color)
 
-  1- Display messages on the message box (two sencors activated)
+#### 1- Display messages on the message box (two sencors activated)
 ```javascript
 // display messages on the message box
 function logMessages(x, y) {
@@ -771,10 +774,9 @@ function logMessages(x, y) {
     document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight; // scroll down the box
 }
 ```
+### Updating display
 
-Updating display
-
-  1- Show directions
+#### 1- Show directions
   
 ```javascript
 // Show directions
@@ -802,7 +804,7 @@ Updating display
             }
         }
 ```
-  2- Showing probabilities and directions
+#### 2- Showing probabilities and directions
 
 ```javascript
  
@@ -853,9 +855,9 @@ Updating display
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
     }
 ```
-#### d. GUI Updates
-Update your GUI for use of the two sensors. 
-Implement changes a and b in your code and demonstrate proper working.
+### d. GUI Updates
+#### Update your GUI for use of the two sensors. 
+#### Implement changes a and b in your code and demonstrate proper working.
 
 *View Probability & Direction*
 <div align="center">
