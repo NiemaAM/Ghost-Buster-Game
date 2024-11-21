@@ -148,11 +148,11 @@ function updateDisplay() {
         cell.style.borderColor = '';
         cell.style.color = 'transparent';
         // Show colors (no mode selected)
-        if (!isDirection) {
+        /*if (!isDirection) {
             let probability = colorsProbabilities[y][x];
             cell.style.backgroundColor = cellColors[y][x];
             cell.style.borderColor = cellColors[y][x];
-        }
+        }*/
         // Show probability in View mode
         if (isView && !isDirection) {
             let probability = colorsProbabilities[y][x];
@@ -182,7 +182,6 @@ function updateDisplay() {
                 cell.textContent = arrow;
                 cell.style.color = 'black';
                 cell.style.backgroundColor = "darkGray";
-                cell.style.scale = 0.9;
             } else {
                 cell.textContent = hasClicked ? (isPercentageMode ? dirProb + "%" : dirProb.toFixed(2)) : (isPercentageMode ? dirProb + "%" : dirProb.toFixed(4));
                 cell.style.color = dirProb > 0 ? 'black' : 'darkGray';
