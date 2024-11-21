@@ -858,4 +858,82 @@ function toggleDirection() {
     }
 }
 ```
+Handling already busted cell
 
+Updating GUI when using two sensors (Direction & Color)
+
+  1- Display messages on the message box
+```javascript
+// display messages on the message box
+function logMessages(x, y) {
+    const messages = document.getElementById('messages');
+    const selectedDirection = cellDirections[y][x];
+    const selectedColor = cellColors[y][x];
+    // Combine View and Direction modes
+    if (isView && isDirection && (selectedDirection && selectedColor))
+        switch (selectedDirection) {
+            case D.NE: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the NorthEast, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.NW: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the NorthWest, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.SE: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the SouthEast, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.SW: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the SouthWest, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.N: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly North, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.S: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly South, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.E: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly East, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.W: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly West, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            default: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">Bust The Ghost!</span><br>`;
+        }
+    
+    document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight; // scroll down the box
+}
+```
+### d. Handling Data Storage
+
+Creating an array to store the clicked cells
+```javascript
+let isDirection = false; // Direction button
+function getCellsInDirectionExtended(startCell, direction) {
+    const { x, y } = startCell;
+    const cells = [];
+    switch (direction) {
+        case D.N: // North
+            for (let i = y - 1; i >= 0; i--) cells.push({ x, y: i });
+            break;
+        case D.S: // South
+            for (let i = y + 1; i < gridHeight; i++) cells.push({ x, y: i });
+            break;
+        case D.E: // East
+            for (let i = x + 1; i < gridWidth; i++) cells.push({ x: i, y });
+            break;
+        case D.W: // West
+            for (let i = x - 1; i >= 0; i--) cells.push({ x: i, y });
+            break;
+        case D.NE: // North-East
+            for (let i = 1; x + i < gridWidth; i++) 
+                for (let j = 1; y - j >= 0; j++) cells.push({ x: x + i, y: y - j });
+            break;
+        case D.SE: // South-East
+            for (let i = 1; x + i < gridWidth; i++) 
+                for (let j = 1; y + j < gridHeight; j++) cells.push({ x: x + i, y: y + j });
+            break;
+        case D.SW: // South-West
+            for (let i = 1; x - i >= 0; i++) 
+                for (let j = 1; y + j < gridHeight; j++) cells.push({ x: x - i, y: y + j });
+            break;
+        case D.NW: // North-West
+            for (let i = 1; x - i >= 0; i++) 
+                for (let j = 1; y - j >= 0; j++) cells.push({ x: x - i, y: y - j });
+            break;
+        default:
+            return [];
+    }
+    return cells;
+}
+```
