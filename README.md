@@ -5,7 +5,7 @@
 # Ghost Buster Game
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
-    <img src="images/preview.png" alt="preview" height = "400">
+    <img src="images/preview.png" alt="preview">
   </a>
 </div>
 
@@ -44,6 +44,13 @@ All team menbers worked together on the project:
 ### Task1: Basic Ghost game
 
 #### 1. Create a 8x13 Grid
+*8x13 Grid UI*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/UI.png" alt="preview">
+  </a>
+</div>
+
 ```html
 <div class="grid" id="gameGrid"></div>
 ```
@@ -75,6 +82,7 @@ function newGame(){ location.reload(); } //Handle new Game button
 #### 2. Build Buttons
 Build a button to Bust the ghost and another one called View.
 * Bust the ghost button.
+
 ```html
 <button class="button" id="bustButton" onclick="bust()" disabled>BUST</button>
 ```
@@ -113,10 +121,10 @@ function bust() {
                 startVelocity: 30,
             });
         } else {
-            score -= 10; // Deduct score for wrong guess
+            score -= 1; // Deduct score for wrong guess
             document.getElementById('messages').innerHTML += `<span style="color: red">Wrong guess!</span><br>`;
             // Game over case (no more busts)
-            if (busts <= 0 || score < 10) {
+            if (busts <= 0 || score < 1) {
                 document.getElementById('messages').innerHTML += "Game Over!<br>";
                 document.getElementById('endGameScreen').style.display = 'flex'; 
                 document.getElementById('endGameMessage').innerHTML = "Game Over!";
@@ -131,7 +139,8 @@ function bust() {
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
         updateDisplay();
     }
-    else if (score < 10){
+    else if (score <= 0){
+        score = 0;
         document.getElementById('messages').innerHTML += "Game Over!<br>";
         document.getElementById('endGameScreen').style.display = 'flex'; 
         document.getElementById('endGameMessage').innerHTML = "Game Over!";
@@ -191,7 +200,7 @@ Show the remaining “bust” attempts & the remaining "score" and "ghosts" at a
 // Update the display
 let ghosts = 1;
 let busts = 2;
-let score = 50;
+let score = 15;
 let endgame = false;
 let hasClicked = false; //Displaying the exact probability number in the first state
 function updateDisplay() {
@@ -323,6 +332,21 @@ When clicking a cell, the user/player does a sensor reading and gets a color.
   * User can decide to "bust" a cell. 
   * If ghost is in the cell, the player wins otherwise he/she loses.
   * if the number of allowed busts (initialized to 2) runs out too.
+
+*Remaining Bust Attempts*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/busts.gif" alt="preview">
+  </a>
+</div>
+
+*Remaining Score*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/score.gif" alt="preview">
+  </a>
+</div>
+
 ```javascript
 // Handle cell selection
 let selectedCell = null; // currently selected cell
@@ -379,6 +403,31 @@ const P = {'red': 0.6500, 'orange': 0.20, 'yellow': 0.10, 'green': 0.050};
   * *1 or 2 cells away:* `orange`
   * *3 or 4 cells away:* `yellow`
   * *5+ cells away:* `green`
+
+*Selected cell is green*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/green cell.png" alt="preview">
+  </a>
+</div>
+*Selected cell is yellow*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/yellow cell.png" alt="preview">
+  </a>
+</div>
+*Selected cell is orange*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/orange cell.png" alt="preview">
+  </a>
+</div>
+*Selected cell is red*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/red cell.png" alt="preview">
+  </a>
+</div>
 
 ``` javascript
 // Separate conditional distribution tables for colors per distance
@@ -437,6 +486,12 @@ $Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)$
 * And $P(S = Color at location Li | G = Li) = P(S = Color | distance = 0)$
 
 You will need to normalize all the probabilities of the other locations, after each update of the posteriori probability of the clicked position `Li`.
+*View Probability*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/view.gif" alt="preview">
+  </a>
+</div>
 
 `UpdatePosteriorGhostLocationProbabilities(Color: c, xclk,yclk)`
 ```javascript
@@ -486,6 +541,12 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
 
 #### a. Conditional Distributions
 Give the conditional distributions for the direction sensor.
+*View Direction*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/direction.gif" alt="preview">
+  </a>
+</div>
 
 | Direction | Symbole | P |
 |-----|-----|-----|
@@ -545,7 +606,6 @@ Give the conditional distributions for the direction sensor.
 >  - **Yellow**: Probability 0.10 when 3-4 cells away.
 >  - **Green**: Probability 0.050 when 5 or more cells away.
 >- **Joint Probability Calculation**: The joint probability \( P(\text{Direction}, \text{Color}) \) is the product of the individual probabilities, assuming the two events are independent.
-
 
 ``` javascript
 let directionalProbabilities = Array(gridHeight).fill().map(() => Array(gridWidth).fill(1 / (gridWidth * gridHeight)));
@@ -613,6 +673,13 @@ function updateProbabilitiesWithDirection() {
 #### c. GUI Updates
 Update your GUI for use of the two sensors. 
 Implement changes a and b in your code and demonstrate proper working.
+*View Probability & Direction*
+<div align="center">
+  <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
+    <img src="images/view+direction.gif" alt="preview">
+  </a>
+</div>
+
 ``` javascript
 let isDirection = false; // Direction button
 function getCellsInDirectionExtended(startCell, direction) {
