@@ -808,7 +808,7 @@ function toggleDirection() {
 ```
 Build percentage & direction buttons:
 
-... javascript
+``` javascript
 
 // Handle direction button
 function toggleDirection() {
@@ -848,4 +848,4 @@ function togglePercentage() {
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
     }
 }
-...
+```
