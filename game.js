@@ -181,13 +181,11 @@ function updateDisplay() {
             if (arrow) {
                 cell.textContent = arrow;
                 cell.style.color = 'black';
-                cell.style.backgroundColor = "darkGray";
             } else {
                 cell.textContent = hasClicked ? (isPercentageMode ? dirProb + "%" : dirProb.toFixed(2)) : (isPercentageMode ? dirProb + "%" : dirProb.toFixed(4));
                 cell.style.color = dirProb > 0 ? 'black' : 'darkGray';
             }
-            cell.style.backgroundColor = cellColors[y][x];
-            cell.style.borderColor = cellColors[y][x];
+            cell.style.backgroundColor = 'white';
         }
         // show probailities and direction
         if (isView && isDirection) {
