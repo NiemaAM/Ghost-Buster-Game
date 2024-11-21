@@ -70,10 +70,10 @@ function bust() {
                 startVelocity: 30,
             });
         } else {
-            score -= 10; // Deduct score for wrong guess
+            score -= 1; // Deduct score for wrong guess
             document.getElementById('messages').innerHTML += `<span style="color: red">Wrong guess!</span><br>`;
             // Game over case (no more busts)
-            if (busts <= 0 || score < 10) {
+            if (busts <= 0 || score < 1) {
                 document.getElementById('messages').innerHTML += "Game Over!<br>";
                 document.getElementById('endGameScreen').style.display = 'flex'; 
                 document.getElementById('endGameMessage').innerHTML = "Game Over!";
@@ -88,7 +88,8 @@ function bust() {
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
         updateDisplay();
     }
-    else if (score < 10){
+    else if (score <= 0){
+        score = 0;
         document.getElementById('messages').innerHTML += "Game Over!<br>";
         document.getElementById('endGameScreen').style.display = 'flex'; 
         document.getElementById('endGameMessage').innerHTML = "Game Over!";
@@ -131,7 +132,7 @@ function toggleView() {
 // Update the display
 let ghosts = 1;
 let busts = 2;
-let score = 50;
+let score = 15;
 let endgame = false;
 let hasClicked = false; //Displaying the exact probability number in the first state
 function updateDisplay() {
@@ -261,7 +262,7 @@ let colorsProbabilities = Array(gridHeight).fill().map(() => Array(gridWidth).fi
 let selectedCell = null; // currently selected cell
 function selectCell(x, y) {
     if (!endgame)
-        if (score > 0){
+        if (score > 1){
             score -= 1; 
             selectedCell = { x, y };
             const cells = document.querySelectorAll('.cell');
@@ -271,7 +272,8 @@ function selectCell(x, y) {
             // Enable the Bust & Time button when a cell is selected
             document.getElementById('bustButton').disabled = false;
             sensorReading(x, y);
-        } else {
+        } else if (score === 1) {
+            score = 0;
             document.getElementById('messages').innerHTML += "Game Over!<br>";
             endgame = true;// End the game
             document.getElementById('endGameScreen').style.display = 'flex'; 
