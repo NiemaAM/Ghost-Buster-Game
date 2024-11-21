@@ -148,11 +148,11 @@ function updateDisplay() {
         cell.style.borderColor = '';
         cell.style.color = 'transparent';
         // Show colors (no mode selected)
-        /*if (!isDirection) {
+        if (!isDirection && !isview) {
             let probability = colorsProbabilities[y][x];
             cell.style.backgroundColor = cellColors[y][x];
             cell.style.borderColor = cellColors[y][x];
-        }*/
+        }
         // Show probability in View mode
         if (isView && !isDirection) {
             let probability = colorsProbabilities[y][x];
