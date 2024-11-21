@@ -3,6 +3,8 @@
 ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?logo=html5&logoColor=white)
 
 # Ghost Buster Game
+
+*Game Preview*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
     <img src="images/preview.png" alt="preview">
@@ -44,6 +46,7 @@ All team menbers worked together on the project:
 ### Task1: Basic Ghost game
 
 #### 1. Create a 8x13 Grid
+
 *8x13 Grid UI*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
@@ -82,7 +85,6 @@ function newGame(){ location.reload(); } //Handle new Game button
 #### 2. Build Buttons
 Build a button to Bust the ghost and another one called View.
 * Bust the ghost button.
-
 ```html
 <button class="button" id="bustButton" onclick="bust()" disabled>BUST</button>
 ```
@@ -410,18 +412,21 @@ const P = {'red': 0.6500, 'orange': 0.20, 'yellow': 0.10, 'green': 0.050};
     <img src="images/green cell.png" alt="preview">
   </a>
 </div>
+
 *Selected cell is yellow*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
     <img src="images/yellow cell.png" alt="preview">
   </a>
 </div>
+
 *Selected cell is orange*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
     <img src="images/orange cell.png" alt="preview">
   </a>
 </div>
+
 *Selected cell is red*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
@@ -486,6 +491,7 @@ $Pt(G = Li) = P(S = Color at location Li | G = Li) * Pt-1(G = Lj)$
 * And $P(S = Color at location Li | G = Li) = P(S = Color | distance = 0)$
 
 You will need to normalize all the probabilities of the other locations, after each update of the posteriori probability of the clicked position `Li`.
+
 *View Probability*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
@@ -541,6 +547,7 @@ function UpdatePosteriorGhostLocationProbabilities(c, xclk, yclk) {
 
 #### a. Conditional Distributions
 Give the conditional distributions for the direction sensor.
+
 *View Direction*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
@@ -673,6 +680,7 @@ function updateProbabilitiesWithDirection() {
 #### c. GUI Updates
 Update your GUI for use of the two sensors. 
 Implement changes a and b in your code and demonstrate proper working.
+
 *View Probability & Direction*
 <div align="center">
   <a href="https://github.com/NiemaAM/Ghost-Buster-Game">
