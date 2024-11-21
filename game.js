@@ -148,7 +148,7 @@ function updateDisplay() {
         cell.style.borderColor = '';
         cell.style.color = 'transparent';
         // Show colors (no mode selected)
-        if (!isDirection && !isview) {
+        if (!isDirection) {
             let probability = colorsProbabilities[y][x];
             cell.style.backgroundColor = cellColors[y][x];
             cell.style.borderColor = cellColors[y][x];
