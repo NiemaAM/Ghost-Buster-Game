@@ -182,6 +182,8 @@ function updateDisplay() {
                 cell.textContent = arrow;
                 cell.style.color = 'black';
                 cell.style.backgroundColor = 'white';
+                if(arrow === '👻')
+                    cell.style.backgroundColor = "black";
             } else {
                 cell.textContent = hasClicked ? (isPercentageMode ? dirProb + "%" : dirProb.toFixed(2)) : (isPercentageMode ? dirProb + "%" : dirProb.toFixed(4));
                 cell.style.color = dirProb > 0 ? 'black' : 'darkGray';
