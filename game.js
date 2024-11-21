@@ -181,6 +181,8 @@ function updateDisplay() {
             if (arrow) {
                 cell.textContent = arrow;
                 cell.style.color = 'black';
+                cell.style.backgroundColor = "darkGray";
+                cell.style.scale = 0.9;
             } else {
                 cell.textContent = hasClicked ? (isPercentageMode ? dirProb + "%" : dirProb.toFixed(2)) : (isPercentageMode ? dirProb + "%" : dirProb.toFixed(4));
                 cell.style.color = dirProb > 0 ? 'black' : 'darkGray';
