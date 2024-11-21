@@ -808,8 +808,34 @@ function toggleDirection() {
 ```
 Build percentage & direction buttons:
 
+``` html
+ <button class="button" id="percentageToggle" onclick="togglePercentage()">Percentage %</button>
+```
+
 ``` javascript
 
+// Handle Percentage button
+let isPercentageMode = false;
+function togglePercentage() {
+    isPercentageMode = !isPercentageMode;
+    const percentageButton = document.getElementById('percentageToggle');
+    percentageButton.innerHTML = isPercentageMode ? "Fractional" : "Percentage %";
+    percentageButton.style.backgroundColor = isPercentageMode ? "orange" : "#00aeff";
+    percentageButton.style.borderColor = isPercentageMode ? "orange" : "blue";
+    updateDisplay(); // Refresh the display
+    if (isPercentageMode) {
+        document.getElementById('messages').innerHTML += "Percentage probabilities.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    } else{
+        document.getElementById('messages').innerHTML += "Fractional probabilities.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    }
+}
+```
+``` html
+<button class="button" id="directionButton" onclick="toggleDirection()">Directions</button>
+```
+``` javascript
 // Handle direction button
 function toggleDirection() {
     isDirection = !isDirection;
@@ -830,22 +856,5 @@ function toggleDirection() {
         document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
     }
 }
-
-// Handle Percentage button
-let isPercentageMode = false;
-function togglePercentage() {
-    isPercentageMode = !isPercentageMode;
-    const percentageButton = document.getElementById('percentageToggle');
-    percentageButton.innerHTML = isPercentageMode ? "Fractional" : "Percentage %";
-    percentageButton.style.backgroundColor = isPercentageMode ? "orange" : "#00aeff";
-    percentageButton.style.borderColor = isPercentageMode ? "orange" : "blue";
-    updateDisplay(); // Refresh the display
-    if (isPercentageMode) {
-        document.getElementById('messages').innerHTML += "Percentage probabilities.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    } else{
-        document.getElementById('messages').innerHTML += "Fractional probabilities.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    }
-}
 ```
+
