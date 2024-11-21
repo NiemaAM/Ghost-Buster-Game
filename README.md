@@ -40,8 +40,9 @@ All team menbers worked together on the project:
      * [Task2: Use a direction sensor with the distance sensor](#task2-use-a-direction-sensor-with-the-distance-sensor)
        * [a. Conditional Distributions](#a-conditional-distributions)
        * [b. Update Posterior Formula](#b-update-posterior-formula)
-       * [c. GUI Updates](#c-gui-updates)
-       * [d. Handling Data Storage](#d-handling-data-storage)
+       * [c. Building Buttons](#c-building-buttons)
+       * [d. GUI Updates](#d-gui-updates)
+       * [e. Handling Data Storage](#e-handling-data-storage)
 <!--te-->
 
 ## Game Structure
@@ -680,7 +681,179 @@ function updateProbabilitiesWithDirection() {
 }
 ```
 
-#### c. GUI Updates
+
+### c. Building Buttons
+
+#### Build percentage & direction buttons:
+
+``` html
+ <button class="button" id="percentageToggle" onclick="togglePercentage()">Percentage %</button>
+```
+
+``` javascript
+
+// Handle Percentage button
+let isPercentageMode = false;
+function togglePercentage() {
+    isPercentageMode = !isPercentageMode;
+    const percentageButton = document.getElementById('percentageToggle');
+    percentageButton.innerHTML = isPercentageMode ? "Fractional" : "Percentage %";
+    percentageButton.style.backgroundColor = isPercentageMode ? "orange" : "#00aeff";
+    percentageButton.style.borderColor = isPercentageMode ? "orange" : "blue";
+    updateDisplay(); // Refresh the display
+    if (isPercentageMode) {
+        document.getElementById('messages').innerHTML += "Percentage probabilities.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    } else{
+        document.getElementById('messages').innerHTML += "Fractional probabilities.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    }
+}
+```
+``` html
+<button class="button" id="directionButton" onclick="toggleDirection()">Directions</button>
+```
+``` javascript
+// Handle direction button
+function toggleDirection() {
+    isDirection = !isDirection;
+    const directionButton = document.getElementById('directionButton');
+    directionButton.innerHTML = `Directions ${isDirection ? '✅' : ''}`;
+    updateProbabilitiesWithDirection();
+    updateDisplay();
+    isDirection ? directionButton.style.backgroundColor = "lightGreen" : directionButton.style.backgroundColor = "#00aeff";
+    isDirection ? directionButton.style.borderColor = "lightGreen" : directionButton.style.borderColor = "blue";
+    if (isView && isDirection) {
+        document.getElementById('messages').innerHTML += "Color and direction modes activated.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    } else if (isDirection) {
+        document.getElementById('messages').innerHTML += "Direction mode activated.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    } else if(!isDirection) {
+        document.getElementById('messages').innerHTML += "Direction mode inactivated.<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    }
+}
+```
+Handling already busted cell
+
+Updating GUI when using two sensors (Direction & Color)
+
+  1- Display messages on the message box (two sencors activated)
+```javascript
+// display messages on the message box
+function logMessages(x, y) {
+    const messages = document.getElementById('messages');
+    const selectedDirection = cellDirections[y][x];
+    const selectedColor = cellColors[y][x];
+    // Combine View and Direction modes
+    if (isView && isDirection && (selectedDirection && selectedColor))
+        switch (selectedDirection) {
+            case D.NE: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the NorthEast, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.NW: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the NorthWest, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.SE: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the SouthEast, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.SW: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the SouthWest, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.N: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly North, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.S: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly South, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.E: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly East, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            case D.W: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly West, and is ${getDistanceMessage(selectedColor)}</span><br>`;
+                break;
+            default: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">Bust The Ghost!</span><br>`;
+        }
+    
+    document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight; // scroll down the box
+}
+```
+
+Updating display
+
+  1- Show directions
+  
+```javascript
+// Show directions
+        if (isDirection) {
+            cell.style.backgroundColor = '';
+            updateProbabilitiesWithDirection();
+            let dirProb = directionalProbabilities[y][x];
+            // Display uniform probabilities if no cell has been clicked
+            if (!hasClicked) dirProb = 1 / (gridWidth * gridHeight); // Uniform value for the first state
+            if (isPercentageMode) {
+                dirProb = dirProb.toFixed(2);
+                dirProb = parseInt(dirProb *= 100);
+            }
+            // Display directional probability or arrow
+            const arrow = cellDirections[y][x];
+            if (arrow) {
+                cell.textContent = arrow;
+                cell.style.color = 'black';
+                cell.style.backgroundColor = 'white';
+                if(arrow === '👻')
+                    cell.style.backgroundColor = "black";
+            } else {
+                cell.textContent = hasClicked ? (isPercentageMode ? dirProb + "%" : dirProb.toFixed(2)) : (isPercentageMode ? dirProb + "%" : dirProb.toFixed(4));
+                cell.style.color = dirProb > 0 ? 'black' : 'darkGray';
+            }
+        }
+```
+  2- Showing probabilities and directions
+
+```javascript
+ 
+        // show probailities and direction
+        if (isView && isDirection) {
+            let dirProb = directionalProbabilities[y][x];
+            let combinedProbability = 0;
+            combinedProbability = colorsProbabilities[y][x] * dirProb;
+            if (hasClicked) {
+                // Combining color and direction probabilities
+                // Normalizing combined probabilities across all cells
+                const totalCombinedProbability = directionalProbabilities.flat().reduce((sum, dirProb, i) => {
+                    const xIndex = i % gridWidth;
+                    const yIndex = Math.floor(i / gridWidth);
+                    return sum + colorsProbabilities[yIndex][xIndex] * dirProb;
+                }, 0);
+                if (totalCombinedProbability > 0) {
+                    combinedProbability /= totalCombinedProbability; // Normalize              
+                    if (isPercentageMode) {
+                        combinedProbability = combinedProbability.toFixed(2);
+                        combinedProbability = parseInt(combinedProbability *= 100);
+                    }
+                }
+                const arrow = cellDirections[y][x]; // Display the result based on the direction arrow
+                if (arrow) {
+                    cell.textContent = arrow;
+                    cell.style.color = 'black';
+                } else {
+                    cell.textContent = isPercentageMode ? combinedProbability + "%" : combinedProbability.toFixed(2);
+                    cell.style.color = combinedProbability > 0 ? 'black' : 'darkGray';
+                }
+                cell.style.backgroundColor = cellColors[y][x];
+                cell.style.borderColor = cellColors[y][x];
+            } else {
+                // Default probabilities before any clicks
+                dirProb = 1 / (gridWidth * gridHeight);
+                if (isPercentageMode) {
+                        dirProb = dirProb.toFixed(2);
+                        dirProb = parseInt(dirProb *= 100);
+                }
+                cell.textContent = isPercentageMode ? dirProb + "%" : dirProb.toFixed(4);
+                cell.style.color = "black";
+            }
+        }
+    });
+    if(score === 0){
+        document.getElementById('messages').innerHTML += "Game Over!<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+    }
+```
+#### d. GUI Updates
 Update your GUI for use of the two sensors. 
 Implement changes a and b in your code and demonstrate proper working.
 
@@ -807,96 +980,10 @@ function toggleDirection() {
     }
 }
 ```
-Build percentage & direction buttons:
+### e. Handling Data Storage
 
-``` html
- <button class="button" id="percentageToggle" onclick="togglePercentage()">Percentage %</button>
-```
+#### 1- Creating an array to store the clicked cells
 
-``` javascript
-
-// Handle Percentage button
-let isPercentageMode = false;
-function togglePercentage() {
-    isPercentageMode = !isPercentageMode;
-    const percentageButton = document.getElementById('percentageToggle');
-    percentageButton.innerHTML = isPercentageMode ? "Fractional" : "Percentage %";
-    percentageButton.style.backgroundColor = isPercentageMode ? "orange" : "#00aeff";
-    percentageButton.style.borderColor = isPercentageMode ? "orange" : "blue";
-    updateDisplay(); // Refresh the display
-    if (isPercentageMode) {
-        document.getElementById('messages').innerHTML += "Percentage probabilities.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    } else{
-        document.getElementById('messages').innerHTML += "Fractional probabilities.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    }
-}
-```
-``` html
-<button class="button" id="directionButton" onclick="toggleDirection()">Directions</button>
-```
-``` javascript
-// Handle direction button
-function toggleDirection() {
-    isDirection = !isDirection;
-    const directionButton = document.getElementById('directionButton');
-    directionButton.innerHTML = `Directions ${isDirection ? '✅' : ''}`;
-    updateProbabilitiesWithDirection();
-    updateDisplay();
-    isDirection ? directionButton.style.backgroundColor = "lightGreen" : directionButton.style.backgroundColor = "#00aeff";
-    isDirection ? directionButton.style.borderColor = "lightGreen" : directionButton.style.borderColor = "blue";
-    if (isView && isDirection) {
-        document.getElementById('messages').innerHTML += "Color and direction modes activated.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    } else if (isDirection) {
-        document.getElementById('messages').innerHTML += "Direction mode activated.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    } else if(!isDirection) {
-        document.getElementById('messages').innerHTML += "Direction mode inactivated.<br>";
-        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
-    }
-}
-```
-Handling already busted cell
-
-Updating GUI when using two sensors (Direction & Color)
-
-  1- Display messages on the message box
-```javascript
-// display messages on the message box
-function logMessages(x, y) {
-    const messages = document.getElementById('messages');
-    const selectedDirection = cellDirections[y][x];
-    const selectedColor = cellColors[y][x];
-    // Combine View and Direction modes
-    if (isView && isDirection && (selectedDirection && selectedColor))
-        switch (selectedDirection) {
-            case D.NE: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the NorthEast, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.NW: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the NorthWest, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.SE: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the SouthEast, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.SW: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is in the SouthWest, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.N: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly North, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.S: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly South, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.E: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly East, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            case D.W: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">The ghost is directly West, and is ${getDistanceMessage(selectedColor)}</span><br>`;
-                break;
-            default: messages.innerHTML += `<span style="background-color: ${selectedColor.toLowerCase()}">Bust The Ghost!</span><br>`;
-        }
-    
-    document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight; // scroll down the box
-}
-```
-### d. Handling Data Storage
-
-Creating an array to store the clicked cells
 ```javascript
 let isDirection = false; // Direction button
 function getCellsInDirectionExtended(startCell, direction) {
@@ -936,4 +1023,25 @@ function getCellsInDirectionExtended(startCell, direction) {
     }
     return cells;
 }
+```
+#### 2- Keeping track of busted cells
+
+```javascript
+// Handle bust button
+let bustedCells = [];
+function bust() {
+    if (!selectedCell) {
+        document.getElementById('messages').innerHTML += "Please select a cell to bust !<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+        return;
+    }
+    const { x, y } = selectedCell;
+    const alreadyBusted = bustedCells.some(cell => cell.x === x && cell.y === y); // Check if the cell has already been busted
+    if (alreadyBusted) {
+        document.getElementById('messages').innerHTML += "This cell has already been busted ! (Choose another cell)<br>";
+        document.getElementById('messagesBox').scrollTop = messagesBox.scrollHeight;
+        return;
+    }
+    // Add the selected cell to the bustedCells array
+    bustedCells.push({ x, y });
 ```
