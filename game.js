@@ -221,7 +221,10 @@ function updateDisplay() {
             } else {
                 // Default probabilities before any clicks
                 dirProb = 1 / (gridWidth * gridHeight);
-                if (isPercentageMode) dirProb = parseInt(dirProb.toFixed(2) *= 100);
+                if (isPercentageMode) {
+                        dirProb = dirProb.toFixed(2);
+                        dirProb = parseInt(dirProb *= 100);
+                }
                 cell.textContent = isPercentageMode ? dirProb + "%" : dirProb.toFixed(4);
                 cell.style.color = "black";
             }
